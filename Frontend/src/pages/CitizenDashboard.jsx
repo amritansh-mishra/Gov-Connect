@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import StatsCard from '../components/StatsCard';
 import ActivityFeed from '../components/ActivityFeed';
+import ProjectHighlights from '../components/ProjectHighlights';
 import { FolderOpen, ShieldCheck, MessageSquare, Fingerprint } from 'lucide-react';
 
 const CitizenDashboard = () => {
@@ -37,8 +38,7 @@ const CitizenDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <main className="container mx-auto p-4">
+    <div className="container mx-auto p-4">
         <h1 className="text-3xl font-bold text-text mb-4">{t('dashboard')}</h1>
         {/* Dashboard Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -57,13 +57,7 @@ const CitizenDashboard = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            {/* Placeholder for a main content area, e.g., project highlights or map */}
-            <div className="bg-gray-800 rounded-xl shadow-sm border border-gray-700 p-6 h-full flex items-center justify-center">
-              <div className="text-center">
-                <h2 className="text-2xl font-bold text-text mb-2">Welcome, Citizen!</h2>
-                <p className="text-lightText">Here you can track projects, give feedback, and participate in polls.</p>
-              </div>
-            </div>
+            <ProjectHighlights />
           </div>
           <div>
             <ActivityFeed />
@@ -107,7 +101,6 @@ const CitizenDashboard = () => {
             {t('voteOnUpcomingProjects')}
           </button>
         </div>
-      </main>
     </div>
   );
 };

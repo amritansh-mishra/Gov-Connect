@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Plus, Clock, MapPin, Users } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Plus, Clock, MapPin, Users, LogIn, LogOut } from 'lucide-react';
+import ApiCalendar from 'react-google-calendar-api';
 
-const events = [
-  { id: 1, title: 'Budget Review Meeting', time: '10:00 AM - 11:30 AM', date: '2024-01-15', location: 'Conference Room A', attendees: 8, type: 'meeting', color: 'bg-blue-500' },
-  { id: 2, title: 'New Employee Orientation', time: '2:00 PM - 4:00 PM', date: '2024-01-16', location: 'Training Room B', attendees: 12, type: 'training', color: 'bg-emerald-500' },
-  { id: 3, title: 'Department Heads Meeting', time: '9:00 AM - 10:00 AM', date: '2024-01-17', location: 'Executive Boardroom', attendees: 6, type: 'meeting', color: 'bg-purple-500' },
-  { id: 4, title: 'IT Security Training', time: '1:00 PM - 3:00 PM', date: '2024-01-18', location: 'Computer Lab', attendees: 25, type: 'training', color: 'bg-amber-500' },
-  { id: 5, title: 'Quarterly Review', time: '3:00 PM - 5:00 PM', date: '2024-01-19', location: 'Main Auditorium', attendees: 45, type: 'review', color: 'bg-red-500' },
-];
+// TODO: Replace with your own Google Calendar API credentials from https://console.developers.google.com/
+const CLIENT_ID = '582117416021-675eolb9mb1hqracqr9cra93hu2dbjvr.apps.googleusercontent.com'
+const API_KEY = 'AIzaSyBFG6MeVcDE7iLZGEoBcTBf7VUrg1ARaTc';
+
+const config = {
+  clientId: CLIENT_ID,
+  apiKey: API_KEY,
+  scope: 'https://www.googleapis.com/auth/calendar.readonly',
+  discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+};
+
+const apiCalendar = new ApiCalendar(config);
 
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -15,6 +21,57 @@ const months = ['January','February','March','April','May','June','July','August
 export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [events, setEvents] = useState([]);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+    useEffect(() => {
+    // Check initial sign-in status
+    if (apiCalendar.gapi) {
+      setIsSignedIn(apiCalendar.gapi.auth2.getAuthInstance().isSignedIn.get());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      fetchEvents();
+    }
+  }, [isSignedIn]);
+
+  const fetchEvents = () => {
+    apiCalendar.listUpcomingEvents(100)
+      .then(({ result }) => {
+        const formattedEvents = result.items.map(event => ({
+          id: event.id,
+          title: event.summary,
+          time: `${new Date(event.start.dateTime).toLocaleTimeString()} - ${new Date(event.end.dateTime).toLocaleTimeString()}`,
+          date: event.start.dateTime.split('T')[0], // YYYY-MM-DD
+          location: event.location || 'Not specified',
+          attendees: event.attendees ? event.attendees.length : 0,
+          color: 'bg-blue-500', // You can add logic for color based on event type
+        }));
+        setEvents(formattedEvents);
+      })
+      .catch(error => {
+        console.error("Error fetching events: ", error);
+      });
+  };
+
+    const handleSignIn = () => {
+    apiCalendar.handleAuthClick()
+      .then(() => {
+        console.log('Signed in successfully');
+        setIsSignedIn(true);
+      })
+      .catch(error => {
+        console.error('Error signing in:', error);
+      });
+  };
+
+    const handleSignOut = () => {
+    apiCalendar.handleSignoutClick();
+    setIsSignedIn(false);
+    setEvents([]); // Clear events on sign out
+  };
 
   const getDaysInMonth = (date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
@@ -63,8 +120,8 @@ export default function Calendar() {
             isSelected 
               ? 'bg-blue-600 text-white' 
               : isToday 
-                ? 'bg-blue-100 text-blue-600' 
-                : 'hover:bg-gray-100'
+                ? 'bg-primary/20 text-primary' 
+                : 'hover:bg-gray-700/50'
           }`}
         >
           {day}
@@ -84,32 +141,45 @@ export default function Calendar() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-background text-text">
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Calendar</h2>
-            <p className="text-gray-600 mt-1">Schedule and manage government events and meetings.</p>
+            <h2 className="text-2xl font-bold">Calendar</h2>
+            <p className="text-lightText mt-1">Schedule and manage government events and meetings.</p>
           </div>
-          <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-            <Plus className="w-4 h-4" />
-            <span>Add Event</span>
-          </button>
+          <div className="flex items-center space-x-4">
+            <button className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+              <Plus className="w-4 h-4" />
+              <span>Add Event</span>
+            </button>
+            {isSignedIn ? (
+              <button onClick={handleSignOut} className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                <LogOut className="w-4 h-4" />
+                <span>Sign Out</span>
+              </button>
+            ) : (
+              <button onClick={handleSignIn} className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                <LogIn className="w-4 h-4" />
+                <span>Sign in with Google</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Calendar */}
-        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="lg:col-span-2 bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold">
               {months[currentDate.getMonth()]} {currentDate.getFullYear()}
             </h3>
             <div className="flex items-center space-x-2">
-              <button onClick={() => navigateMonth('prev')} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button onClick={() => navigateMonth('prev')} className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors">
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <button onClick={() => navigateMonth('next')} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button onClick={() => navigateMonth('next')} className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors">
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
@@ -117,7 +187,7 @@ export default function Calendar() {
 
           <div className="grid grid-cols-7 gap-1 mb-4">
             {daysOfWeek.map(day => (
-              <div key={day} className="h-10 flex items-center justify-center text-sm font-medium text-gray-500">
+              <div key={day} className="h-10 flex items-center justify-center text-sm font-medium text-lightText">
                 {day}
               </div>
             ))}
@@ -129,19 +199,19 @@ export default function Calendar() {
         </div>
 
         {/* Events for Selected Date */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Events for {selectedDate.toLocaleDateString()}
+        <div className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6">
+          <h3 className="text-lg font-semibold mb-4">
+            Events for {selectedDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
           </h3>
           <div className="space-y-4">
             {getEventsForSelectedDate().length > 0 ? (
               getEventsForSelectedDate().map(event => (
-                <div key={event.id} className="border border-gray-200 rounded-lg p-4">
+                <div key={event.id} className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
                   <div className="flex items-start space-x-3">
                     <div className={`w-3 h-3 rounded-full ${event.color} mt-1.5`}></div>
                     <div className="flex-1">
-                      <h4 className="font-medium text-gray-900 mb-2">{event.title}</h4>
-                      <div className="space-y-1 text-sm text-gray-600">
+                      <h4 className="font-medium text-text mb-2">{event.title}</h4>
+                      <div className="space-y-1 text-sm text-lightText">
                         <div className="flex items-center space-x-2">
                           <Clock className="w-4 h-4" />
                           <span>{event.time}</span>
@@ -161,8 +231,8 @@ export default function Calendar() {
               ))
             ) : (
               <div className="text-center py-8">
-                <CalendarIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500">No events scheduled for this date</p>
+                <CalendarIcon className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+                <p className="text-gray-400">{isSignedIn ? 'No events scheduled for this date' : 'Sign in to view your events'}</p>
               </div>
             )}
           </div>
@@ -170,24 +240,28 @@ export default function Calendar() {
       </div>
 
       {/* Upcoming Events */}
-      <div className="mt-6 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">Upcoming Events</h3>
+      <div className="mt-6 bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6">
+        <h3 className="text-lg font-semibold mb-6">Upcoming Events</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {events.slice(0, 6).map(event => (
-            <div key={event.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+          {isSignedIn && events.length > 0 ? events.slice(0, 6).map(event => (
+            <div key={event.id} className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 hover:bg-gray-700/50 transition-shadow">
               <div className="flex items-start space-x-3">
                 <div className={`w-3 h-3 rounded-full ${event.color} mt-1.5`}></div>
                 <div className="flex-1">
-                  <h4 className="font-medium text-gray-900 mb-1">{event.title}</h4>
-                  <p className="text-sm text-gray-600 mb-2">{new Date(event.date).toLocaleDateString()}</p>
-                  <div className="flex items-center space-x-4 text-xs text-gray-500">
+                  <h4 className="font-medium text-text mb-1">{event.title}</h4>
+                  <p className="text-sm text-lightText mb-2">{new Date(event.date).toLocaleDateString()}</p>
+                  <div className="flex items-center space-x-4 text-xs text-gray-400">
                     <span>{event.time}</span>
                     <span>{event.attendees} attendees</span>
                   </div>
                 </div>
               </div>
             </div>
-          ))}
+          )) : (
+            <div className="col-span-full text-center py-8">
+              <p className="text-gray-400">{isSignedIn ? 'No upcoming events.' : 'Sign in to see your upcoming events.'}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

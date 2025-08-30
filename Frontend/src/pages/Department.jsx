@@ -92,13 +92,13 @@ export default function Departments() {
   return (
     <div className="p-6">
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900">Departments</h2>
-        <p className="text-gray-600 mt-1">Manage and overview all government departments and their operations.</p>
+        <h2 className="text-2xl font-bold text-text">Departments</h2>
+        <p className="text-lightText mt-1">Manage and overview all government departments and their operations.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {departments.map((dept) => (
-          <div key={dept.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all">
+          <div key={dept.id} className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6 hover:shadow-xl transition-all">
             <div className="flex items-start justify-between mb-4">
               <div className={`p-3 rounded-lg ${dept.lightColor}`}>
                 <Building className={`w-6 h-6 ${dept.textColor}`} />
@@ -106,34 +106,34 @@ export default function Departments() {
               <div className="text-right">
                 <div className="flex items-center space-x-1">
                   <TrendingUp className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm font-semibold text-gray-900">{dept.performance}%</span>
+                  <span className="text-sm font-semibold text-text">{dept.performance}%</span>
                 </div>
-                <span className="text-xs text-gray-500">Performance</span>
+                <span className="text-xs text-lightText">Performance</span>
               </div>
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">{dept.name}</h3>
-            <p className="text-sm text-gray-600 mb-4">Head: {dept.head}</p>
+            <h3 className="text-lg font-semibold text-text mb-2">{dept.name}</h3>
+            <p className="text-sm text-lightText mb-4">Head: {dept.head}</p>
 
             <div className="space-y-3 mb-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <Users className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600">Employees</span>
+                  <span className="text-sm text-lightText">Employees</span>
                 </div>
-                <span className="text-sm font-medium text-gray-900">{dept.employees}</span>
+                <span className="text-sm font-medium text-text">{dept.employees}</span>
               </div>
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <span className="w-4 h-4 text-gray-400">$</span>
-                  <span className="text-sm text-gray-600">Budget</span>
+                  <span className="text-sm text-lightText">Budget</span>
                 </div>
-                <span className="text-sm font-medium text-gray-900">{dept.budget}</span>
+                <span className="text-sm font-medium text-text">{dept.budget}</span>
               </div>
             </div>
 
-            <div className="space-y-2 mb-4 text-xs text-gray-500">
+            <div className="space-y-2 mb-4 text-xs text-lightText">
               <div className="flex items-center space-x-2">
                 <MapPin className="w-3 h-3" />
                 <span>{dept.location}</span>
@@ -148,7 +148,7 @@ export default function Departments() {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-gray-100">
+            <div className="pt-4 border-t border-gray-700">
               <button className={`w-full py-2 px-4 rounded-lg text-white font-medium transition-all hover:scale-105 ${dept.color}`}>
                 View Details
               </button>

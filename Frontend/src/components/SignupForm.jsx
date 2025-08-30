@@ -65,7 +65,7 @@ export default function SignupForm({ onSignup }) {
       }
 
       const role = 'citizen'; // Only citizens use this form now
-      const resp = await apiRegister({ username, password, role, email });
+      const resp = await apiRegister({ fullName: username, password, role, email });
       onSignup(resp.token, resp.user);
     } catch (err) {
       setError(err.message || 'Registration failed');
@@ -223,7 +223,7 @@ export default function SignupForm({ onSignup }) {
               {/* Username Field */}
               <div>
                 <label htmlFor="username" className="block text-sm font-medium text-text mb-2">
-                  Username
+                  Full Name
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -235,7 +235,7 @@ export default function SignupForm({ onSignup }) {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className="block w-full pl-10 pr-3 py-3 bg-background/50 backdrop-blur-sm border border-lightText/30 rounded-xl text-text placeholder-lightText/80 focus:ring-2 focus:ring-primary focus:border-primary focus:bg-background/70 transition-all duration-300"
-                    placeholder="Choose a username"
+                    placeholder="Enter your full name"
                     required
                   />
                 </div>

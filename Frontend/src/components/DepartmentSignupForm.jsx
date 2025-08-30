@@ -126,7 +126,7 @@ export default function DepartmentSignupForm({ onSignup }) {
 
     try {
       const resp = await apiRegister({
-        username: formData.username,
+        fullName: formData.username,
         password: formData.password,
         role: 'department',
         email: formData.email,

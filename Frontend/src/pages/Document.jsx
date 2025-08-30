@@ -37,8 +37,8 @@ export default function Documents() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Documents</h2>
-            <p className="text-gray-600 mt-1">Manage and access all government documents and files.</p>
+            <h2 className="text-2xl font-bold text-text">Documents</h2>
+            <p className="text-lightText mt-1">Manage and access all government documents and files.</p>
           </div>
           <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
             <Upload className="w-4 h-4" />
@@ -48,7 +48,7 @@ export default function Documents() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+      <div className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6 mb-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -57,7 +57,7 @@ export default function Documents() {
               placeholder="Search documents..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="pl-10 pr-4 py-2 w-full border border-gray-600 bg-background/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-text"
             />
           </div>
           
@@ -67,7 +67,7 @@ export default function Documents() {
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border border-gray-600 bg-background/20 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-text"
               >
                 {documentTypes.map(type => (
                   <option key={type} value={type}>{type}</option>
@@ -78,7 +78,7 @@ export default function Documents() {
             <select
               value={selectedDepartment}
               onChange={(e) => setSelectedDepartment(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="border border-gray-600 bg-background/20 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-text"
             >
               {departments.map(dept => (
                 <option key={dept} value={dept}>{dept}</option>
@@ -91,22 +91,22 @@ export default function Documents() {
       {/* Documents Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {filteredDocuments.map((doc) => (
-          <div key={doc.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all">
+          <div key={doc.id} className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6 hover:shadow-xl transition-all">
             <div className="flex items-start space-x-4">
               <div className={`p-3 rounded-lg bg-opacity-10 bg-blue-500`}>
                 <FileText className={`w-6 h-6 text-blue-500`} />
               </div>
               
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">{doc.name}</h3>
-                <div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
+                <h3 className="text-lg font-semibold text-text mb-1">{doc.name}</h3>
+                <div className="flex items-center space-x-4 text-sm text-lightText mb-3">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium bg-blue-500 text-white`}>
                     {doc.type}
                   </span>
                   <span>{doc.department}</span>
                 </div>
                 
-                <div className="space-y-2 text-sm text-gray-600">
+                <div className="space-y-2 text-sm text-lightText">
                   <div className="flex items-center space-x-2">
                     <User className="w-4 h-4 text-gray-400" />
                     <span>Uploaded by {doc.uploadedBy}</span>
@@ -123,18 +123,18 @@ export default function Documents() {
                         <span>{doc.downloads || 0} downloads</span>
                       </div>
                     </div>
-                    <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">
+                    <span className="px-2 py-1 text-xs bg-green-900/50 text-green-300 rounded-full">
                       Active
                     </span>
                   </div>
                 </div>
                 
-                <div className="flex items-center space-x-2 mt-4 pt-4 border-t border-gray-100">
+                <div className="flex items-center space-x-2 mt-4 pt-4 border-t border-gray-700">
                   <button className="flex items-center space-x-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
                     <Eye className="w-4 h-4" />
                     <span>View</span>
                   </button>
-                  <button className="flex items-center space-x-1 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm">
+                  <button className="flex items-center space-x-1 px-3 py-2 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 transition-colors text-sm">
                     <Download className="w-4 h-4" />
                     <span>Download</span>
                   </button>
@@ -148,8 +148,8 @@ export default function Documents() {
       {filteredDocuments.length === 0 && (
         <div className="text-center py-12">
           <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No documents found</h3>
-          <p className="text-gray-600">Try adjusting your search criteria or filters.</p>
+          <h3 className="text-lg font-medium text-text mb-2">No documents found</h3>
+          <p className="text-lightText">Try adjusting your search criteria or filters.</p>
         </div>
       )}
     </div>

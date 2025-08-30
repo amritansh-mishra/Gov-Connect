@@ -28,7 +28,7 @@ export default function Dashboard() {
     fetchData();
   }, []);
   return (
-    <div className="p-6 bg-gradient-to-br from-slate-50 via-white to-slate-50 min-h-screen">
+    <div className="p-6">
       {/* Removed header-like content to avoid duplicate headers. */}
       {/* <div className="mb-8">
         <div className="flex items-center space-x-3 mb-2">
@@ -89,31 +89,31 @@ export default function Dashboard() {
         <ActivityFeed />
         
         {/* Upcoming Events */}
-        <div className="bg-gradient-to-br from-white to-slate-50 rounded-xl shadow-lg border border-slate-200/50 p-6 hover:shadow-xl transition-all duration-300">
+        <div className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6 hover:shadow-xl transition-all duration-300">
           <div className="flex items-center space-x-3 mb-6">
             <div className="w-2 h-6 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
-            <h3 className="text-lg font-bold text-slate-800">Upcoming Events</h3>
+            <h3 className="text-lg font-bold text-text">Upcoming Events</h3>
           </div>
           <div className="space-y-5">
             <div className="flex items-start space-x-4 p-3 rounded-lg hover:bg-blue-50/50 transition-colors duration-200 group">
               <div className="w-3 h-3 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full mt-2 shadow-sm group-hover:scale-110 transition-transform"></div>
               <div className="flex-1">
-                <p className="text-sm font-semibold text-slate-800 group-hover:text-blue-700 transition-colors">Budget Review Meeting</p>
-                <p className="text-sm text-slate-500 font-medium">Tomorrow, 10:00 AM</p>
+                <p className="text-sm font-semibold text-text group-hover:text-blue-400 transition-colors">Budget Review Meeting</p>
+                <p className="text-sm text-lightText font-medium">Tomorrow, 10:00 AM</p>
               </div>
             </div>
             <div className="flex items-start space-x-4 p-3 rounded-lg hover:bg-emerald-50/50 transition-colors duration-200 group">
               <div className="w-3 h-3 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full mt-2 shadow-sm group-hover:scale-110 transition-transform"></div>
               <div className="flex-1">
-                <p className="text-sm font-semibold text-slate-800 group-hover:text-emerald-700 transition-colors">New Employee Orientation</p>
-                <p className="text-sm text-slate-500 font-medium">Friday, 2:00 PM</p>
+                <p className="text-sm font-semibold text-text group-hover:text-emerald-400 transition-colors">New Employee Orientation</p>
+                <p className="text-sm text-lightText font-medium">Friday, 2:00 PM</p>
               </div>
             </div>
             <div className="flex items-start space-x-4 p-3 rounded-lg hover:bg-amber-50/50 transition-colors duration-200 group">
               <div className="w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full mt-2 shadow-sm group-hover:scale-110 transition-transform"></div>
               <div className="flex-1">
-                <p className="text-sm font-semibold text-slate-800 group-hover:text-amber-700 transition-colors">Department Heads Meeting</p>
-                <p className="text-sm text-slate-500 font-medium">Next Monday, 9:00 AM</p>
+                <p className="text-sm font-semibold text-text group-hover:text-amber-400 transition-colors">Department Heads Meeting</p>
+                <p className="text-sm text-lightText font-medium">Next Monday, 9:00 AM</p>
               </div>
             </div>
           </div>
