@@ -11,25 +11,31 @@ const generateToken = (user) => {
 };
 
 export const register = async (req, res) => {
-  const { 
-    username, 
-    email, 
-    password, 
-    role = 'citizen', 
-    department = '', 
-    deptCode = '',
-    departmentName = '',
-    contactPerson = '',
-    phoneNumber = '',
-    address = '',
-    description = '',
-    employeeCount = 0,
-    budget = 0
-  } = req.body || {};
+  try {
+    console.log('Registration request body:', req.body);
+    
+    const { 
+      username, 
+      email, 
+      password, 
+      role = 'citizen', 
+      department = '', 
+      deptCode = '',
+      departmentName = '',
+      contactPerson = '',
+      phoneNumber = '',
+      address = '',
+      description = '',
+      employeeCount = 0,
+      budget = 0
+    } = req.body || {};
 
-  if (!username || !email || !password) {
-    return res.status(400).json({ error: 'Username, email, and password are required' });
-  }
+    console.log('Parsed registration data:', { username, email, password: password ? '[HIDDEN]' : undefined, role });
+
+    if (!username || !email || !password) {
+      console.log('Missing required fields:', { username: !!username, email: !!email, password: !!password });
+      return res.status(400).json({ error: 'Username, email, and password are required' });
+    }
   if (!/\S+@\S+\.\S+/.test(email)) {
     return res.status(400).json({ error: 'Invalid email format' });
   }
@@ -45,6 +51,7 @@ export const register = async (req, res) => {
   let deptCodeHash = '';
   if (role === 'department') {
     if (!department || !deptCode) {
+      console.log('Department validation failed:', { department, deptCode: !!deptCode });
       return res.status(400).json({ error: 'Department and department access code are required for department users' });
     }
     if (deptCode.length < 6) { // Example: minimum 6 characters for department code
@@ -89,6 +96,10 @@ export const register = async (req, res) => {
       budget: newUser.budget
     } 
   });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ error: 'Internal server error during registration' });
+  }
 };
 
 export const login = async (req, res) => {

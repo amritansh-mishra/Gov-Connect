@@ -9,7 +9,7 @@ dotenv.config();
 
 const app = express();
 
-const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5173';
+const CORS_ORIGIN = process.env.CORS_ORIGIN || ['http://localhost:5173', 'http://localhost:5174'];
 app.use(cors({ origin: CORS_ORIGIN }));
 app.use(express.json());
 
