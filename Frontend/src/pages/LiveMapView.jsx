@@ -1,87 +1,73 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-import LazyLoad from 'react-lazyload';
-
-// Fix for default icon issues with Leaflet and Webpack/Vite
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: `https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png`,
-  iconUrl: `https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png`,
-  shadowUrl: `https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png`,
-});
+import { MapPin, Clock, AlertTriangle, CheckCircle } from 'lucide-react';
 
 const LiveMapView = () => {
   const { t } = useTranslation();
 
-  // Dummy project data with statuses for color coding
+  // Project data with locations and statuses
   const projects = [
     {
       id: 1,
       name: 'Smart City Initiative',
       status: 'onTime',
-      mapLocation: { lat: 28.7041, lng: 77.1025 }, // Delhi
+      location: 'Central Delhi',
+      progress: 75,
+      budget: '₹50 Cr',
+      department: 'Urban Development'
     },
     {
       id: 2,
       name: 'Clean Rivers Project',
       status: 'delayed',
-      mapLocation: { lat: 28.5355, lng: 77.3910 }, // Noida
+      location: 'Yamuna Riverfront',
+      progress: 45,
+      budget: '₹30 Cr',
+      department: 'Environment'
     },
     {
       id: 3,
       name: 'New School Construction',
       status: 'stalled',
-      mapLocation: { lat: 28.4595, lng: 77.0266 }, // Gurgaon
+      location: 'Gurgaon Sector 15',
+      progress: 20,
+      budget: '₹15 Cr',
+      department: 'Education'
     },
     {
       id: 4,
       name: 'Public Transport Upgrade',
       status: 'onTime',
-      mapLocation: { lat: 28.6139, lng: 77.2090 }, // Central Delhi
+      location: 'Metro Line Extension',
+      progress: 60,
+      budget: '₹200 Cr',
+      department: 'Transport'
     },
   ];
 
-  // Custom icons for different statuses
-  const greenIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-  });
-
-  const yellowIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-  });
-
-  const redIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-  });
-
-  const getIconForStatus = (status) => {
+  const getStatusIcon = (status) => {
     switch (status) {
       case 'onTime':
-        return greenIcon;
+        return <CheckCircle className="w-5 h-5 text-green-500" />;
       case 'delayed':
-        return yellowIcon;
+        return <Clock className="w-5 h-5 text-orange-500" />;
       case 'stalled':
-        return redIcon;
+        return <AlertTriangle className="w-5 h-5 text-red-500" />;
       default:
-        return L.Icon.Default;
+        return <MapPin className="w-5 h-5 text-gray-500" />;
+    }
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'onTime':
+        return 'bg-green-500';
+      case 'delayed':
+        return 'bg-orange-500';
+      case 'stalled':
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-500';
     }
   };
 
@@ -90,37 +76,82 @@ const LiveMapView = () => {
       <main className="container mx-auto p-4">
         <h1 className="text-3xl font-bold text-text mb-6">{t('liveMapView')}</h1>
 
-        <div className="bg-gray-800 rounded-xl shadow-md border border-gray-700 p-6">
-          <LazyLoad height={600} offset={200} once>
-            <MapContainer
-              center={[28.6139, 77.2090]} // Centered around Delhi
-              zoom={12}
-              style={{ height: '600px', width: '100%' }}
-              className="rounded-lg border border-gray-700"
-            >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              />
-              {projects.map((project) => (
-                <Marker
-                  key={project.id}
-                  position={[project.mapLocation.lat, project.mapLocation.lng]}
-                  icon={getIconForStatus(project.status)}
-                >
-                  <Popup>
-                    <div className="font-semibold text-text">{project.name}</div>
-                    <div className="text-lightText">{t('status')}: {t(project.status)}</div>
-                  </Popup>
-                </Marker>
-              ))}
-            </MapContainer>
-          </LazyLoad>
+        {/* Map Placeholder */}
+        <div className="bg-gray-800 rounded-xl shadow-md border border-gray-700 p-6 mb-6">
+          <div className="bg-gray-700 rounded-lg h-96 flex items-center justify-center border-2 border-dashed border-gray-600">
+            <div className="text-center">
+              <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-text mb-2">Interactive Map</h3>
+              <p className="text-lightText">Live project locations and status tracking</p>
+              <p className="text-sm text-gray-400 mt-2">Map component temporarily disabled for stability</p>
+            </div>
+          </div>
+        </div>
 
-          <div className="mt-4 flex justify-center space-x-4 text-sm font-medium text-text">
-            <div className="flex items-center"><span className="w-3 h-3 bg-primary rounded-full mr-2"></span> {t('onTime')}</div>
-            <div className="flex items-center"><span className="w-3 h-3 bg-accent rounded-full mr-2"></span> {t('delayed')}</div>
-            <div className="flex items-center"><span className="w-3 h-3 bg-red-500 rounded-full mr-2"></span> {t('stalled')}</div>
+        {/* Project Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+          {projects.map((project) => (
+            <div key={project.id} className="bg-gray-800 rounded-xl shadow-md border border-gray-700 p-6">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center">
+                  {getStatusIcon(project.status)}
+                  <h3 className="text-lg font-semibold text-text ml-2">{project.name}</h3>
+                </div>
+                <span className={`px-2 py-1 rounded-full text-xs font-medium text-white ${getStatusColor(project.status)}`}>
+                  {t(project.status)}
+                </span>
+              </div>
+              
+              <div className="space-y-3">
+                <div className="flex items-center text-lightText">
+                  <MapPin className="w-4 h-4 mr-2" />
+                  <span className="text-sm">{project.location}</span>
+                </div>
+                
+                <div>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="text-lightText">Progress</span>
+                    <span className="text-text font-medium">{project.progress}%</span>
+                  </div>
+                  <div className="w-full bg-gray-700 rounded-full h-2">
+                    <div 
+                      className={`h-2 rounded-full ${getStatusColor(project.status)}`}
+                      style={{ width: `${project.progress}%` }}
+                    ></div>
+                  </div>
+                </div>
+                
+                <div className="flex justify-between pt-2 border-t border-gray-700">
+                  <div>
+                    <p className="text-xs text-lightText">Budget</p>
+                    <p className="text-sm font-medium text-text">{project.budget}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-lightText">Department</p>
+                    <p className="text-sm font-medium text-text">{project.department}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Status Legend */}
+        <div className="mt-8 bg-gray-800 rounded-xl shadow-md border border-gray-700 p-6">
+          <h3 className="text-lg font-semibold text-text mb-4">Project Status Legend</h3>
+          <div className="flex flex-wrap gap-6">
+            <div className="flex items-center">
+              <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+              <span className="text-text">{t('onTime')} - Projects proceeding as scheduled</span>
+            </div>
+            <div className="flex items-center">
+              <Clock className="w-5 h-5 text-orange-500 mr-2" />
+              <span className="text-text">{t('delayed')} - Projects behind schedule</span>
+            </div>
+            <div className="flex items-center">
+              <AlertTriangle className="w-5 h-5 text-red-500 mr-2" />
+              <span className="text-text">{t('stalled')} - Projects temporarily halted</span>
+            </div>
           </div>
         </div>
       </main>

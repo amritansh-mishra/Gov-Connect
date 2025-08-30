@@ -13,10 +13,10 @@ function withAuthHeaders(init = {}) {
   return { ...init, headers };
 }
 
-export async function register({ username, password, role }) {
+export async function register({ username, password, role, email, deptCode, department, departmentName, contactPerson, phoneNumber, address, description, employeeCount, budget }) {
   const res = await fetch(`${API_BASE_URL}/api/auth/register`, withAuthHeaders({
     method: 'POST',
-    body: JSON.stringify({ username, password, role }),
+    body: JSON.stringify({ username, password, role, email, deptCode, department, departmentName, contactPerson, phoneNumber, address, description, employeeCount, budget }),
   }));
   if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Registration failed');
   const data = await res.json();
