@@ -140,7 +140,7 @@ export default function DepartmentSignupForm({ onSignup }) {
         employeeCount: formData.employeeCount,
         budget: formData.budget
       });
-      onSignup(resp.user.username, '***', 'department', formData.departmentCode);
+      onSignup(resp.token, resp.user);
     } catch (err) {
       setError(err.message || 'Registration failed');
     } finally {

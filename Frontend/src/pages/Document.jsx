@@ -1,88 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getDocuments } from '../api';
 import { FileText, Download, Upload, Search, Filter, Calendar, User, Eye } from 'lucide-react';
 
-const documents = [
-  {
-    id: 1,
-    name: 'Healthcare Benefits Policy 2024',
-    type: 'Policy',
-    department: 'Human Resources',
-    uploadedBy: 'Sarah Johnson',
-    uploadDate: '2024-01-15',
-    size: '2.4 MB',
-    status: 'Active',
-    downloads: 156,
-    color: 'bg-blue-500',
-  },
-  {
-    id: 2,
-    name: 'IT Security Guidelines',
-    type: 'Guidelines',
-    department: 'Information Technology',
-    uploadedBy: 'Michael Chen',
-    uploadDate: '2024-01-12',
-    size: '1.8 MB',
-    status: 'Active',
-    downloads: 89,
-    color: 'bg-emerald-500',
-  },
-  {
-    id: 3,
-    name: 'Q4 Budget Report 2023',
-    type: 'Report',
-    department: 'Finance',
-    uploadedBy: 'Emily Rodriguez',
-    uploadDate: '2024-01-10',
-    size: '5.2 MB',
-    status: 'Active',
-    downloads: 234,
-    color: 'bg-amber-500',
-  },
-  {
-    id: 4,
-    name: 'Emergency Response Procedures',
-    type: 'Procedures',
-    department: 'Operations',
-    uploadedBy: 'David Kim',
-    uploadDate: '2024-01-08',
-    size: '3.1 MB',
-    status: 'Active',
-    downloads: 67,
-    color: 'bg-red-500',
-  },
-  {
-    id: 5,
-    name: 'Public Communication Standards',
-    type: 'Standards',
-    department: 'Public Relations',
-    uploadedBy: 'Lisa Thompson',
-    uploadDate: '2024-01-05',
-    size: '1.5 MB',
-    status: 'Active',
-    downloads: 45,
-    color: 'bg-purple-500',
-  },
-  {
-    id: 6,
-    name: 'Legal Compliance Checklist',
-    type: 'Checklist',
-    department: 'Legal Affairs',
-    uploadedBy: 'Robert Wilson',
-    uploadDate: '2024-01-03',
-    size: '0.8 MB',
-    status: 'Active',
-    downloads: 123,
-    color: 'bg-indigo-500',
-  },
-];
-
-const documentTypes = ['All', 'Policy', 'Guidelines', 'Report', 'Procedures', 'Standards', 'Checklist'];
-const departments = ['All', 'Human Resources', 'Information Technology', 'Finance', 'Operations', 'Public Relations', 'Legal Affairs'];
 
 export default function Documents() {
+  const [documents, setDocuments] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('All');
   const [selectedDepartment, setSelectedDepartment] = useState('All');
+
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const data = await getDocuments();
+        setDocuments(data);
+      } catch (error) {
+        console.error('Failed to fetch documents:', error);
+      }
+    };
+    fetchDocuments();
+  }, []);
+
+  const documentTypes = ['All', ...new Set(documents.map(d => d.type))];
+  const departments = ['All', ...new Set(documents.map(d => d.department))];
 
   const filteredDocuments = documents.filter(doc => {
     const matchesSearch = doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -153,14 +93,14 @@ export default function Documents() {
         {filteredDocuments.map((doc) => (
           <div key={doc.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all">
             <div className="flex items-start space-x-4">
-              <div className={`p-3 rounded-lg bg-opacity-10 ${doc.color.replace('bg-', 'bg-opacity-10 bg-')}`}>
-                <FileText className={`w-6 h-6 ${doc.color.replace('bg-', 'text-')}`} />
+              <div className={`p-3 rounded-lg bg-opacity-10 bg-blue-500`}>
+                <FileText className={`w-6 h-6 text-blue-500`} />
               </div>
               
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">{doc.name}</h3>
                 <div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${doc.color} text-white`}>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium bg-blue-500 text-white`}>
                     {doc.type}
                   </span>
                   <span>{doc.department}</span>
@@ -177,14 +117,14 @@ export default function Documents() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                      <span>Size: {doc.size}</span>
+                      <span>Size: {doc.size || 'N/A'}</span>
                       <div className="flex items-center space-x-1">
                         <Download className="w-4 h-4 text-gray-400" />
-                        <span>{doc.downloads} downloads</span>
+                        <span>{doc.downloads || 0} downloads</span>
                       </div>
                     </div>
                     <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">
-                      {doc.status}
+                      Active
                     </span>
                   </div>
                 </div>

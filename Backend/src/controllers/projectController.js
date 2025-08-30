@@ -47,7 +47,7 @@ const projects = [
 ];
 
 export function listProjects(req, res) {
-  res.json({ data: projects });
+  res.json(projects);
 }
 
 

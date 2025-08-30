@@ -1,42 +1,42 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Clock, User, FileText, Users, CheckCircle } from 'lucide-react';
+import { Clock, FolderOpen, Vote, FileText, FileBarChart } from 'lucide-react';
 
 const activities = [
   {
     id: 1,
-    type: 'document',
-    title: 'newPolicyDocumentUploaded',
-    description: 'healthcareBenefitsPolicy',
-    time: 'twoHoursAgo',
-    icon: FileText,
+    type: 'project',
+    title: 'projectUpdate',
+    description: 'metroLineExtensionPhase2',
+    time: 'threeHoursAgo',
+    icon: FolderOpen,
     color: 'bg-blue-500/20 text-primary',
   },
   {
     id: 2,
-    type: 'user',
-    title: 'newEmployeeOnboarded',
-    description: 'michaelChenJoinedIT',
-    time: 'fourHoursAgo',
-    icon: User,
+    type: 'poll',
+    title: 'newPollAvailable',
+    description: 'parkRenovationPoll',
+    time: 'yesterday',
+    icon: Vote,
     color: 'bg-emerald-500/20 text-secondary',
   },
   {
     id: 3,
-    type: 'meeting',
-    title: 'departmentMeetingCompleted',
-    description: 'q4PlanningFinance',
-    time: 'oneDayAgo',
-    icon: Users,
+    type: 'announcement',
+    title: 'communityAnnouncement',
+    description: 'townHallMeetingJan25',
+    time: 'twoDaysAgo',
+    icon: FileText,
     color: 'bg-amber-500/20 text-accent',
   },
   {
     id: 4,
-    type: 'task',
-    title: 'budgetApprovalCompleted',
-    description: 'q1BudgetApproved',
-    time: 'twoDaysAgo',
-    icon: CheckCircle,
+    type: 'report',
+    title: 'newReportPublished',
+    description: 'annualWaterQualityReport',
+    time: 'fourDaysAgo',
+    icon: FileBarChart,
     color: 'bg-primary/20 text-primary',
   },
 ];

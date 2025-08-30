@@ -15,7 +15,7 @@ export default function Header({ user, onLogout, setIsSidebarOpen, isSidebarOpen
 
       {/* Content */}
       <div className="relative z-10">
-        {user?.userType === 'citizen' ? (
+        {user?.role === 'citizen' ? (
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button

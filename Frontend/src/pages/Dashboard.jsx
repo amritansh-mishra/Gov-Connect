@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { getDashboardData } from '../api';
 import StatsCard from '../components/StatsCard';
 import ActivityFeed from '../components/ActivityFeed';
 import ProgressChart from '../components/ProgressChart';
@@ -6,6 +7,26 @@ import QuickActions from '../components/QuickActions';
 import { Users, Building, FileText, TrendingUp } from 'lucide-react';
 
 export default function Dashboard() {
+  const [stats, setStats] = useState({
+    totalEmployees: { value: 0, change: '' },
+    activeDepartments: { value: 0, change: '' },
+    documentsProcessed: { value: 0, change: '' },
+    efficiencyRate: { value: '0%', change: '' },
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getDashboardData();
+        setStats(data.stats);
+      } catch (error) {
+        console.error('Failed to fetch dashboard data:', error);
+        // Optionally, set some error state to show in the UI
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <div className="p-6 bg-gradient-to-br from-slate-50 via-white to-slate-50 min-h-screen">
       {/* Removed header-like content to avoid duplicate headers. */}
@@ -21,32 +42,32 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatsCard
           title="Total Employees"
-          value="1,247"
-          change="+12%"
+          value={stats.totalEmployees.value.toLocaleString()}
+          change={stats.totalEmployees.change}
           changeType="increase"
           icon={Users}
           color="blue"
         />
         <StatsCard
           title="Active Departments"
-          value="8"
-          change="+1"
+          value={stats.activeDepartments.value}
+          change={stats.activeDepartments.change}
           changeType="increase"
           icon={Building}
           color="green"
         />
         <StatsCard
           title="Documents Processed"
-          value="432"
-          change="+8%"
+          value={stats.documentsProcessed.value}
+          change={stats.documentsProcessed.change}
           changeType="increase"
           icon={FileText}
           color="yellow"
         />
         <StatsCard
           title="Efficiency Rate"
-          value="94.2%"
-          change="+2.1%"
+          value={stats.efficiencyRate.value}
+          change={stats.efficiencyRate.change}
           changeType="increase"
           icon={TrendingUp}
           color="green"

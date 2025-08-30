@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import Landing from './pages/Landing';
-import Sidebar from './components/Sidebar';
+import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 
 import Departments from './pages/Department';
@@ -22,103 +22,95 @@ import CitizenPolling from './pages/CitizenPolling';
 import LiveMapView from './pages/LiveMapView';
 import DownloadReports from './pages/DownloadReports';
 import DepartmentSignupForm from './components/DepartmentSignupForm';
+import { setToken as setApiToken } from './api';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleLogin = (username, password, userType, department) => {
-    // Simple demo authentication
-    if (username && password) {
-      setIsAuthenticated(true);
-      setUser({ 
-        username, 
-        name: username, 
-        role: userType === 'citizen' ? 'Citizen' : 'Department Staff',
-        userType,
-        department: userType === 'department' ? department : null
-      });
-    } else {
-      alert('Invalid credentials');
+  useEffect(() => {
+    // Initialize token and user from localStorage
+    const storedToken = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
+    
+    if (storedToken) {
+      setToken(storedToken);
+      setApiToken(storedToken);
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
     }
+    
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    setApiToken(token);
+  }, [token]);
+
+  const handleLogin = (newToken, newUser) => {
+    localStorage.setItem('user', JSON.stringify(newUser));
+    setUser(newUser);
+    setToken(newToken); // This will trigger the useEffect
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    localStorage.removeItem('user');
+    setToken(null);
     setUser(null);
   };
 
-  if (!isAuthenticated) {
+    if (isLoading) {
     return (
-      <Router>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
-          <Route path="/signup" element={<SignupForm onSignup={handleLogin} />} />
-          <Route path="/signup/department" element={<DepartmentSignupForm onSignup={handleLogin} />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
     );
   }
 
   return (
     <Router>
-      <div className="min-h-screen bg-background">
-        {user?.userType === 'citizen' ? (
-          <>
-            <Sidebar user={user} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
-            <div className="lg:pl-64">
-              <Header user={user} onLogout={handleLogout} setIsSidebarOpen={setIsSidebarOpen} isSidebarOpen={isSidebarOpen} />
-              <main role="main">
-                <Routes>
-                  {/* Citizen Routes */}
-                  <Route path="/" element={<CitizenDashboard />} />
-                  <Route path="/projects" element={<ProjectsDirectory />} />
-                  <Route path="/projects/:id" element={<ProjectDetails />} />
-                  <Route path="/feedback" element={<CitizenFeedback />} />
-                  <Route path="/map" element={<LiveMapView />} />
-                  <Route path="/polls" element={<CitizenPolling />} />
-                  <Route path="/reports" element={<DownloadReports />} />
-                  <Route path="/profile" element={<div className="p-6"><h1 className="text-2xl font-bold">My Account</h1></div>} />
-                  <Route path="/help" element={<Help />} />
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
-              </main>
-            </div>
-          </>
+      <Routes>
+        {token ? (
+          <Route path="/*" element={<Layout user={user} onLogout={handleLogout} />}>
+            {user?.role === 'citizen' ? (
+              <>
+                <Route index element={<CitizenDashboard />} />
+                <Route path="projects" element={<ProjectsDirectory />} />
+                <Route path="projects/:id" element={<ProjectDetails />} />
+                <Route path="feedback" element={<CitizenFeedback />} />
+                <Route path="map" element={<LiveMapView />} />
+                <Route path="polls" element={<CitizenPolling />} />
+                <Route path="reports" element={<DownloadReports />} />
+                <Route path="profile" element={<div className="p-6"><h1 className="text-2xl font-bold">My Account</h1></div>} />
+                <Route path="help" element={<Help />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </>
+            ) : (
+              <>
+                <Route index element={<Dashboard />} />
+                <Route path="departments" element={<Departments />} />
+                <Route path="employees" element={<Employees />} />
+                <Route path="documents" element={<Documents />} />
+                <Route path="analytics" element={<Analytics />} />
+                <Route path="calendar" element={<Calendar />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="help" element={<Help />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </>
+            )}
+          </Route>
         ) : (
           <>
-            <Sidebar user={user} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
-            <div className="lg:pl-64">
-              <Header user={user} onLogout={handleLogout} setIsSidebarOpen={setIsSidebarOpen} isSidebarOpen={isSidebarOpen} />
-              <main role="main">
-                <Routes>
-                  {/* Department Routes */}
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/departments" element={<Departments />} />
-                  <Route path="/employees" element={<Employees />} />
-                  <Route path="/documents" element={<Documents />} />
-                  <Route path="/analytics" element={<Analytics />} />
-                  <Route path="/calendar" element={<Calendar />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/help" element={<Help />} />
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
-              </main>
-            </div>
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
+            <Route path="/signup" element={<SignupForm onSignup={handleLogin} />} />
+            <Route path="/signup/department" element={<DepartmentSignupForm onSignup={handleLogin} />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </>
         )}
-
-        {/* Overlay for small screens when sidebar is open */}
-        {isSidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
-            onClick={() => setIsSidebarOpen(false)}
-          ></div>
-        )}
-      </div>
+      </Routes>
     </Router>
   );
 }

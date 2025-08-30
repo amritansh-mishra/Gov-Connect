@@ -1,96 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getEmployees } from '../api';
 import { Search, Filter, Plus, User, Mail, Phone, MapPin, Calendar } from 'lucide-react';
 
-const employees = [
-  {
-    id: 1,
-    name: 'Sarah Johnson',
-    position: 'Department Head - HR',
-    department: 'Human Resources',
-    email: 'sarah.johnson@govconnect.gov',
-    phone: '+1 (555) 123-4567',
-    location: 'Building A, Floor 3',
-    joinDate: '2019-03-15',
-    status: 'Active',
-    avatar: 'SJ',
-    color: 'bg-blue-500',
-  },
-  {
-    id: 2,
-    name: 'Michael Chen',
-    position: 'IT Director',
-    department: 'Information Technology',
-    email: 'michael.chen@govconnect.gov',
-    phone: '+1 (555) 234-5678',
-    location: 'Building B, Floor 2',
-    joinDate: '2020-07-22',
-    status: 'Active',
-    avatar: 'MC',
-    color: 'bg-emerald-500',
-  },
-  {
-    id: 3,
-    name: 'Emily Rodriguez',
-    position: 'Finance Manager',
-    department: 'Finance',
-    email: 'emily.rodriguez@govconnect.gov',
-    phone: '+1 (555) 345-6789',
-    location: 'Building A, Floor 1',
-    joinDate: '2018-11-08',
-    status: 'Active',
-    avatar: 'ER',
-    color: 'bg-amber-500',
-  },
-  {
-    id: 4,
-    name: 'David Kim',
-    position: 'Operations Director',
-    department: 'Operations',
-    email: 'david.kim@govconnect.gov',
-    phone: '+1 (555) 456-7890',
-    location: 'Building C, Floor 1',
-    joinDate: '2017-05-12',
-    status: 'Active',
-    avatar: 'DK',
-    color: 'bg-green-500',
-  },
-  {
-    id: 5,
-    name: 'Lisa Thompson',
-    position: 'PR Specialist',
-    department: 'Public Relations',
-    email: 'lisa.thompson@govconnect.gov',
-    phone: '+1 (555) 567-8901',
-    location: 'Building A, Floor 4',
-    joinDate: '2021-01-18',
-    status: 'Active',
-    avatar: 'LT',
-    color: 'bg-purple-500',
-  },
-  {
-    id: 6,
-    name: 'Robert Wilson',
-    position: 'Legal Counsel',
-    department: 'Legal Affairs',
-    email: 'robert.wilson@govconnect.gov',
-    phone: '+1 (555) 678-9012',
-    location: 'Building B, Floor 4',
-    joinDate: '2019-09-30',
-    status: 'Active',
-    avatar: 'RW',
-    color: 'bg-indigo-500',
-  },
-];
 
 export default function Employees() {
+  const [employees, setEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('All');
 
-  const departments = ['All', 'Human Resources', 'Information Technology', 'Finance', 'Operations', 'Public Relations', 'Legal Affairs'];
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const data = await getEmployees();
+        setEmployees(data);
+      } catch (error) {
+        console.error('Failed to fetch employees:', error);
+      }
+    };
+    fetchEmployees();
+  }, []);
+
+  const departments = ['All', ...new Set(employees.map(e => e.department))];
 
   const filteredEmployees = employees.filter(employee => {
     const matchesSearch = employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         employee.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         employee.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          employee.department.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesDepartment = selectedDepartment === 'All' || employee.department === selectedDepartment;
     return matchesSearch && matchesDepartment;
@@ -147,14 +81,14 @@ export default function Employees() {
         {filteredEmployees.map((employee) => (
           <div key={employee.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all">
             <div className="flex items-start space-x-4 mb-4">
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${employee.color}`}>
-                {employee.avatar}
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold bg-blue-500`}>
+                {employee.name.charAt(0)}
               </div>
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-gray-900">{employee.name}</h3>
-                <p className="text-sm text-gray-600">{employee.position}</p>
+                <p className="text-sm text-gray-600">{employee.role}</p>
                 <span className="inline-block px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full mt-1">
-                  {employee.status}
+                  Active
                 </span>
               </div>
             </div>
@@ -167,18 +101,6 @@ export default function Employees() {
               <div className="flex items-center space-x-2">
                 <Mail className="w-4 h-4 text-gray-400" />
                 <span className="truncate">{employee.email}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Phone className="w-4 h-4 text-gray-400" />
-                <span>{employee.phone}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <MapPin className="w-4 h-4 text-gray-400" />
-                <span>{employee.location}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Calendar className="w-4 h-4 text-gray-400" />
-                <span>Joined {new Date(employee.joinDate).toLocaleDateString()}</span>
               </div>
             </div>
 

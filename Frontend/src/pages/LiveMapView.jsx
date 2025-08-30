@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import LazyLoad from 'react-lazyload';
 
 // Fix for default icon issues with Leaflet and Webpack/Vite
 delete L.Icon.Default.prototype._getIconUrl;
@@ -91,8 +90,7 @@ const LiveMapView = () => {
         <h1 className="text-3xl font-bold text-text mb-6">{t('liveMapView')}</h1>
 
         <div className="bg-gray-800 rounded-xl shadow-md border border-gray-700 p-6">
-          <LazyLoad height={600} offset={200} once>
-            <MapContainer
+          <MapContainer
               center={[28.6139, 77.2090]} // Centered around Delhi
               zoom={12}
               style={{ height: '600px', width: '100%' }}
@@ -115,7 +113,6 @@ const LiveMapView = () => {
                 </Marker>
               ))}
             </MapContainer>
-          </LazyLoad>
 
           <div className="mt-4 flex justify-center space-x-4 text-sm font-medium text-text">
             <div className="flex items-center"><span className="w-3 h-3 bg-primary rounded-full mr-2"></span> {t('onTime')}</div>

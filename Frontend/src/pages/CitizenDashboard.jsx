@@ -11,28 +11,28 @@ const CitizenDashboard = () => {
   // Dummy data for citizen dashboard stats
   const citizenStats = [
     {
-      title: 'ongoingProjects',
-      value: '12',
-      change: t('ongoingProjectsChange'),
+      title: 'activeProjects',
+      value: '8',
+      change: '+2 this month',
       changeType: 'increase',
       icon: FolderOpen,
       color: 'blue',
     },
     {
-      title: 'transparencyScore',
-      value: '85%',
-      change: t('transparencyScoreChange'),
-      changeType: 'increase',
-      icon: ShieldCheck,
-      color: 'green',
-    },
-    {
-      title: 'totalCitizenFeedback',
-      value: '450',
-      change: t('totalCitizenFeedbackChange'),
+      title: 'feedbackSubmitted',
+      value: '26',
+      change: '+5 this week',
       changeType: 'increase',
       icon: MessageSquare,
       color: 'yellow',
+    },
+    {
+      title: 'identityVerified',
+      value: 'Verified',
+      change: 'Aadhaar Linked',
+      changeType: 'increase',
+      icon: ShieldCheck,
+      color: 'green',
     },
   ];
 
@@ -59,7 +59,10 @@ const CitizenDashboard = () => {
           <div className="lg:col-span-2">
             {/* Placeholder for a main content area, e.g., project highlights or map */}
             <div className="bg-gray-800 rounded-xl shadow-sm border border-gray-700 p-6 h-full flex items-center justify-center">
-              <p className="text-lg font-medium text-lightText">{t('projectHighlightsMap')}</p>
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-text mb-2">Welcome, Citizen!</h2>
+                <p className="text-lightText">Here you can track projects, give feedback, and participate in polls.</p>
+              </div>
             </div>
           </div>
           <div>

@@ -37,8 +37,8 @@ export default function Sidebar({ user, isSidebarOpen, setIsSidebarOpen }) {
   const location = useLocation();
   const { t } = useTranslation();
   
-  const navigation = user?.userType === 'citizen' ? citizenNavigation : departmentNavigation;
-  const secondaryNav = user?.userType === 'citizen' ? citizenSecondaryNavigation : secondaryNavigation;
+  const navigation = user?.role === 'citizen' ? citizenNavigation : departmentNavigation;
+  const secondaryNav = user?.role === 'citizen' ? citizenSecondaryNavigation : secondaryNavigation;
 
   return (
     <div
@@ -54,12 +54,12 @@ export default function Sidebar({ user, isSidebarOpen, setIsSidebarOpen }) {
             </div>
             <div>
               <h1 className="text-xl font-bold text-text">GovConnect</h1>
-              <p className="text-xs text-lightText">{user?.userType === 'citizen' ? t('citizenPortal') : t('adminPortal')}</p>
+              <p className="text-xs text-lightText">{user?.role === 'citizen' ? t('citizenPortal') : t('adminPortal')}</p>
             </div>
           </div>
         </div>
 
-        <nav className="flex-1 px-4 space-y-2" aria-label={user?.userType === 'citizen' ? t('citizenPrimaryNavigation') : t('departmentPrimaryNavigation')} role="navigation">
+        <nav className="flex-1 px-4 space-y-2" aria-label={user?.role === 'citizen' ? t('citizenPrimaryNavigation') : t('departmentPrimaryNavigation')} role="navigation">
           {navigation.map((item) => (
             <Link
               key={item.name}
@@ -88,7 +88,7 @@ export default function Sidebar({ user, isSidebarOpen, setIsSidebarOpen }) {
         
         <div className="px-4 space-y-2">
           <div className="border-t border-gray-700/50 pt-6">
-            <nav aria-label={user?.userType === 'citizen' ? t('citizenSecondaryNavigation') : t('departmentSecondaryNavigation')} role="navigation">
+            <nav aria-label={user?.role === 'citizen' ? t('citizenSecondaryNavigation') : t('departmentSecondaryNavigation')} role="navigation">
               {secondaryNav.map((item) => (
                 <Link
                   key={item.name}
@@ -118,7 +118,7 @@ export default function Sidebar({ user, isSidebarOpen, setIsSidebarOpen }) {
           <div className="mt-4 text-center">
             <div className="inline-flex items-center space-x-1">
               <div className="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
-              <span className="text-xs text-lightText font-medium">{user?.userType === 'citizen' ? t('citizenPortal') : t('systemOnline')}</span>
+              <span className="text-xs text-lightText font-medium">{user?.role === 'citizen' ? t('citizenPortal') : t('systemOnline')}</span>
             </div>
           </div>
         </div>

@@ -21,7 +21,7 @@ export default function LoginForm({ onLogin }) {
 
     try {
       const resp = await apiLogin({ username, password, deptCode });
-      onLogin(resp.user.username, '***', resp.user.role, resp.user.department);
+      onLogin(resp.token, resp.user);
     } catch (err) {
       setError(err.message || 'Login failed');
     } finally {

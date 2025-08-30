@@ -66,7 +66,7 @@ export default function SignupForm({ onSignup }) {
 
       const role = 'citizen'; // Only citizens use this form now
       const resp = await apiRegister({ username, password, role, email });
-      onSignup(resp.user.username, '***', 'citizen');
+      onSignup(resp.token, resp.user);
     } catch (err) {
       setError(err.message || 'Registration failed');
     } finally {
@@ -304,5 +304,3 @@ export default function SignupForm({ onSignup }) {
     </div>
   );
 }
-
-

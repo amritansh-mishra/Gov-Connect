@@ -33,8 +33,11 @@ const ProjectsDirectory = () => {
     let isMounted = true;
     (async () => {
       try {
-        const data = await fetchProjects();
-        if (isMounted) setProjects(data);
+        const responseData = await fetchProjects();
+        if (isMounted) {
+          const projectsArray = Array.isArray(responseData) ? responseData : responseData.data;
+          setProjects(projectsArray || []);
+        }
       } catch (e) {
         if (isMounted) setError(t('failedToLoadProjects') || 'Failed to load projects');
       } finally {
