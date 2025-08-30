@@ -12,10 +12,10 @@ const actions = [
 
 export default function QuickActions() {
   return (
-    <div className="bg-gradient-to-br from-white to-slate-50 rounded-xl shadow-lg border border-slate-200/50 p-6 hover:shadow-xl transition-all duration-300">
+    <div className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6 hover:shadow-xl transition-all duration-300">
       <div className="flex items-center space-x-3 mb-6">
         <div className="w-2 h-6 bg-gradient-to-b from-indigo-500 to-indigo-600 rounded-full"></div>
-        <h3 className="text-lg font-bold text-slate-800">Quick Actions</h3>
+        <h3 className="text-lg font-bold text-text">Quick Actions</h3>
       </div>
       <div className="grid grid-cols-2 gap-4">
         {actions.map((action) => (

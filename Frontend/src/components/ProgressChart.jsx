@@ -10,10 +10,10 @@ const departments = [
 
 export default function ProgressChart() {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Department Performance</h3>
-        <select className="text-sm border border-gray-300 rounded-md px-3 py-1 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+        <h3 className="text-lg font-semibold text-text">Department Performance</h3>
+        <select className="text-sm border border-gray-600 bg-background/20 rounded-md px-3 py-1 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-text">
           <option>This Month</option>
           <option>Last Month</option>
           <option>This Quarter</option>
@@ -24,10 +24,10 @@ export default function ProgressChart() {
         {departments.map((dept) => (
           <div key={dept.name} className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700">{dept.name}</span>
-              <span className="text-sm font-semibold text-gray-900">{dept.progress}%</span>
+              <span className="text-sm font-medium text-lightText">{dept.name}</span>
+              <span className="text-sm font-semibold text-text">{dept.progress}%</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full bg-gray-700/50 rounded-full h-2">
               <div
                 className={`h-2 rounded-full transition-all duration-500 ${dept.color}`}
                 style={{ width: `${dept.progress}%` }}
