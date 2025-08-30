@@ -96,7 +96,7 @@ export default function LoginForm({ onLogin }) {
               {/* Username Field */}
               <div>
                 <label htmlFor="username" className="block text-sm font-medium text-text mb-2">
-                  Username
+                  Email or Username
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -108,7 +108,7 @@ export default function LoginForm({ onLogin }) {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className="block w-full pl-10 pr-3 py-3 bg-background/50 backdrop-blur-sm border border-lightText/30 rounded-xl text-text placeholder-lightText/80 focus:ring-2 focus:ring-primary focus:border-primary focus:bg-background/70 transition-all duration-300"
-                    placeholder="Enter your username"
+                    placeholder="Enter your email or username"
                     required
                   />
                 </div>

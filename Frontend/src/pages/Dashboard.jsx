@@ -13,12 +13,14 @@ export default function Dashboard() {
     documentsProcessed: { value: 0, change: '' },
     efficiencyRate: { value: '0%', change: '' },
   });
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getDashboardData();
         setStats(data.stats);
+        setUserName(data.userName);
       } catch (error) {
         console.error('Failed to fetch dashboard data:', error);
         // Optionally, set some error state to show in the UI
@@ -29,14 +31,10 @@ export default function Dashboard() {
   }, []);
   return (
     <div className="p-6">
-      {/* Removed header-like content to avoid duplicate headers. */}
-      {/* <div className="mb-8">
-        <div className="flex items-center space-x-3 mb-2">
-          <div className="w-1 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">Department Dashboard</h2>
-        </div>
-        <p className="text-slate-600 ml-4 font-medium">Welcome back, Sarah. Here's what's happening in your departments today.</p>
-      </div> */}
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-text">Department Dashboard</h2>
+        <p className="text-lightText mt-1">{userName ? `Welcome back, ${userName}.` : 'Loading...'}</p>
+      </div>
       
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -95,21 +93,21 @@ export default function Dashboard() {
             <h3 className="text-lg font-bold text-text">Upcoming Events</h3>
           </div>
           <div className="space-y-5">
-            <div className="flex items-start space-x-4 p-3 rounded-lg hover:bg-blue-50/50 transition-colors duration-200 group">
+            <div className="flex items-start space-x-4 p-3 rounded-lg hover:bg-gray-700/50 transition-colors duration-200 group">
               <div className="w-3 h-3 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full mt-2 shadow-sm group-hover:scale-110 transition-transform"></div>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-text group-hover:text-blue-400 transition-colors">Budget Review Meeting</p>
                 <p className="text-sm text-lightText font-medium">Tomorrow, 10:00 AM</p>
               </div>
             </div>
-            <div className="flex items-start space-x-4 p-3 rounded-lg hover:bg-emerald-50/50 transition-colors duration-200 group">
+            <div className="flex items-start space-x-4 p-3 rounded-lg hover:bg-gray-700/50 transition-colors duration-200 group">
               <div className="w-3 h-3 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full mt-2 shadow-sm group-hover:scale-110 transition-transform"></div>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-text group-hover:text-emerald-400 transition-colors">New Employee Orientation</p>
                 <p className="text-sm text-lightText font-medium">Friday, 2:00 PM</p>
               </div>
             </div>
-            <div className="flex items-start space-x-4 p-3 rounded-lg hover:bg-amber-50/50 transition-colors duration-200 group">
+            <div className="flex items-start space-x-4 p-3 rounded-lg hover:bg-gray-700/50 transition-colors duration-200 group">
               <div className="w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full mt-2 shadow-sm group-hover:scale-110 transition-transform"></div>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-text group-hover:text-amber-400 transition-colors">Department Heads Meeting</p>

@@ -30,7 +30,7 @@ export default function StatsCard({ title, value, change, changeType, icon: Icon
   const classes = colorClasses[color];
 
   return (
-    <div className="bg-gray-800 rounded-xl shadow-lg border border-gray-700/50 p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 group">
+    <div className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 group">
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <p className="text-sm font-semibold text-lightText mb-1">{t(title)}</p>

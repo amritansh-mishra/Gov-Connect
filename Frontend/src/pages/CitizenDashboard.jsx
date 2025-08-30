@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getDashboardData } from '../api';
 import StatsCard from '../components/StatsCard';
 import ActivityFeed from '../components/ActivityFeed';
 import ProjectHighlights from '../components/ProjectHighlights';
@@ -7,7 +8,21 @@ import { FolderOpen, ShieldCheck, MessageSquare, Fingerprint } from 'lucide-reac
 
 const CitizenDashboard = () => {
   const { t } = useTranslation();
-  const [aadhaarNumber, setAadhaarNumber] = React.useState('');
+  const [aadhaarNumber, setAadhaarNumber] = useState('');
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getDashboardData();
+        setUserName(data.userName);
+      } catch (error) {
+        console.error('Failed to fetch dashboard data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Dummy data for citizen dashboard stats
   const citizenStats = [
@@ -39,7 +54,8 @@ const CitizenDashboard = () => {
 
   return (
     <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold text-text mb-4">{t('dashboard')}</h1>
+        <h1 className="text-3xl font-bold text-text mb-2">{t('dashboard')}</h1>
+        <p className="text-lightText mb-6">{userName ? `Welcome, ${userName}.` : 'Loading...'}</p>
         {/* Dashboard Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {citizenStats.map((stat, index) => (

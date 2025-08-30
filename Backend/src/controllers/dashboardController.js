@@ -1,9 +1,11 @@
 // @desc    Get dashboard data
 // @route   GET /api/dashboard
 // @access  Private
-export const getDashboardData = (req, res) => {
+export const getDashboardData = async (req, res) => {
+  const { name } = req.user;
   // In a real app, you'd fetch this data from your database
   const dashboardData = {
+    userName: name,
     stats: {
       totalEmployees: { value: 1247, change: '+12%' },
       activeDepartments: { value: 8, change: '+1' },

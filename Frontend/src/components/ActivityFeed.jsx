@@ -45,7 +45,7 @@ export default function ActivityFeed() {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-gray-800 rounded-xl shadow-sm border border-gray-700 p-6">
+    <div className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-semibold text-text">{t('recentActivity')}</h3>
         <button className="text-sm text-primary hover:text-primary/90 font-medium">

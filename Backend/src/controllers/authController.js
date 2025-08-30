@@ -7,7 +7,7 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
 
 const generateToken = (user) => {
-  return jwt.sign({ id: user._id, username: user.username, role: user.role, department: user.department }, JWT_SECRET, { expiresIn: '2h' });
+  return jwt.sign({ id: user._id, name: user.username, role: user.role, department: user.department }, JWT_SECRET, { expiresIn: '2h' });
 };
 
 const formatUserResponse = (user) => {
@@ -100,7 +100,7 @@ export const login = async (req, res) => {
     return res.status(400).json({ error: 'Username and password are required' });
   }
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ $or: [{ email: username }, { username: username }] });
   if (!user) {
     return res.status(401).json({ error: 'Invalid credentials' });
   }

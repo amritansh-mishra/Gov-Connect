@@ -30,25 +30,25 @@ export default function Analytics() {
   return (
     <div className="p-6">
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900">Analytics</h2>
-        <p className="text-gray-600 mt-1">Monitor system performance and user engagement metrics.</p>
+        <h2 className="text-2xl font-bold text-text">Analytics</h2>
+        <p className="text-lightText mt-1">Monitor system performance and user engagement metrics.</p>
       </div>
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {metrics.map((metric, index) => (
-          <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <div key={index} className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">{metric.name}</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{metric.value}</p>
+                <p className="text-sm font-medium text-lightText">{metric.name}</p>
+                <p className="text-2xl font-bold text-text mt-1">{metric.value}</p>
                 <div className="flex items-center mt-2">
                   <TrendingUp className="w-4 h-4 text-emerald-500 mr-1" />
                   <span className="text-sm font-medium text-emerald-600">{metric.change}</span>
-                  <span className="text-sm text-gray-500 ml-1">vs last month</span>
+                  <span className="text-sm text-lightText ml-1">vs last month</span>
                 </div>
               </div>
-              <div className="p-3 bg-blue-50 rounded-lg">
+              <div className="p-3 bg-blue-500/20 rounded-lg">
                 <BarChart3 className="w-6 h-6 text-blue-600" />
               </div>
             </div>
@@ -58,16 +58,16 @@ export default function Analytics() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Department Performance */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6">Department Performance</h3>
+        <div className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6">
+          <h3 className="text-lg font-semibold text-text mb-6">Department Performance</h3>
           <div className="space-y-4">
             {departmentData.map((dept, index) => (
               <div key={index} className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-700">{dept.name}</span>
-                  <span className="text-sm font-semibold text-gray-900">{dept.value}%</span>
+                  <span className="text-sm font-medium text-lightText">{dept.name}</span>
+                  <span className="text-sm font-semibold text-text">{dept.value}%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-700/50 rounded-full h-2">
                   <div
                     className={`h-2 rounded-full transition-all duration-500 ${dept.color}`}
                     style={{ width: `${dept.value}%` }}
@@ -79,8 +79,8 @@ export default function Analytics() {
         </div>
 
         {/* User Activity Chart */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6">Daily User Activity</h3>
+        <div className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6">
+          <h3 className="text-lg font-semibold text-text mb-6">Daily User Activity</h3>
           <div className="space-y-4">
             <div className="flex items-end justify-between h-32 space-x-2">
               {activityData.map((data, index) => (
@@ -89,12 +89,12 @@ export default function Analytics() {
                     className="w-full bg-blue-500 rounded-t-sm transition-all duration-500 hover:bg-blue-600"
                     style={{ height: `${(data.users / 250) * 100}%` }}
                   ></div>
-                  <span className="text-xs text-gray-500 mt-2">{data.time}</span>
+                  <span className="text-xs text-lightText mt-2">{data.time}</span>
                 </div>
               ))}
             </div>
             <div className="text-center">
-              <p className="text-sm text-gray-600">Peak activity: 2:00 PM (234 users)</p>
+              <p className="text-sm text-lightText">Peak activity: 2:00 PM (234 users)</p>
             </div>
           </div>
         </div>
@@ -102,71 +102,71 @@ export default function Analytics() {
 
       {/* Additional Analytics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="p-2 bg-emerald-100 rounded-lg">
+            <div className="p-2 bg-emerald-500/20 rounded-lg">
               <Users className="w-5 h-5 text-emerald-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900">User Engagement</h3>
+            <h3 className="text-lg font-semibold text-text">User Engagement</h3>
           </div>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Daily Active Users</span>
-              <span className="text-sm font-medium">892</span>
+              <span className="text-sm text-lightText">Daily Active Users</span>
+              <span className="text-sm font-medium text-text">892</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Session Duration</span>
-              <span className="text-sm font-medium">24m 32s</span>
+              <span className="text-sm text-lightText">Session Duration</span>
+              <span className="text-sm font-medium text-text">24m 32s</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Bounce Rate</span>
-              <span className="text-sm font-medium">12.4%</span>
+              <span className="text-sm text-lightText">Bounce Rate</span>
+              <span className="text-sm font-medium text-text">12.4%</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="p-2 bg-amber-100 rounded-lg">
+            <div className="p-2 bg-amber-500/20 rounded-lg">
               <FileText className="w-5 h-5 text-amber-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900">Document Stats</h3>
+            <h3 className="text-lg font-semibold text-text">Document Stats</h3>
           </div>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Total Documents</span>
-              <span className="text-sm font-medium">2,847</span>
+              <span className="text-sm text-lightText">Total Documents</span>
+              <span className="text-sm font-medium text-text">2,847</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Downloads Today</span>
-              <span className="text-sm font-medium">156</span>
+              <span className="text-sm text-lightText">Downloads Today</span>
+              <span className="text-sm font-medium text-text">156</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Storage Used</span>
-              <span className="text-sm font-medium">847 GB</span>
+              <span className="text-sm text-lightText">Storage Used</span>
+              <span className="text-sm font-medium text-text">847 GB</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="bg-background/50 rounded-xl shadow-lg border border-gray-700 p-6">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="p-2 bg-purple-100 rounded-lg">
+            <div className="p-2 bg-purple-500/20 rounded-lg">
               <Activity className="w-5 h-5 text-purple-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900">System Health</h3>
+            <h3 className="text-lg font-semibold text-text">System Health</h3>
           </div>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Server Response</span>
-              <span className="text-sm font-medium text-green-600">142ms</span>
+              <span className="text-sm text-lightText">Server Response</span>
+              <span className="text-sm font-medium text-green-400">142ms</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Error Rate</span>
-              <span className="text-sm font-medium text-green-600">0.02%</span>
+              <span className="text-sm text-lightText">Error Rate</span>
+              <span className="text-sm font-medium text-green-400">0.02%</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm text-gray-600">CPU Usage</span>
-              <span className="text-sm font-medium">34%</span>
+              <span className="text-sm text-lightText">CPU Usage</span>
+              <span className="text-sm font-medium text-text">34%</span>
             </div>
           </div>
         </div>

@@ -76,7 +76,7 @@ export default function Header({ user, onLogout, setIsSidebarOpen, isSidebarOpen
                   <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-secondary rounded-full border-2 border-background/80 shadow-sm backdrop-blur-sm"></div>
                 </div>
                 <div className="hidden md:block">
-                  <p className="text-sm font-semibold text-text">{user?.name || 'Citizen'}</p>
+                  <p className="text-sm font-semibold text-text">{user?.username || 'Citizen'}</p>
                   <p className="text-xs text-lightText font-medium">{t('citizen')}</p>
                 </div>
                 {onLogout && (
@@ -162,7 +162,7 @@ export default function Header({ user, onLogout, setIsSidebarOpen, isSidebarOpen
                   <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-secondary rounded-full border-2 border-background/80 shadow-sm backdrop-blur-sm"></div>
                 </div>
                 <div className="hidden md:block">
-                  <p className="text-sm font-semibold text-text">{user?.name || 'Sarah Johnson'}</p>
+                  <p className="text-sm font-semibold text-text">{user?.username || 'Sarah Johnson'}</p>
                   <p className="text-xs text-lightText font-medium">{t('departmentHead')}</p>
                 </div>
                 {onLogout && (
